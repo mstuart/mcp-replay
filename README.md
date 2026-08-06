@@ -1,5 +1,14 @@
-# mcp-replay
+<div align="center">
+  <img src="docs/assets/logo.svg" alt="mcp-replay — Record and replay MCP server interactions for deterministic CI testing — nock/msw for MCP" width="720">
+</div>
 
+<p align="center"><strong>Record and replay MCP server interactions for deterministic CI testing — nock/msw for MCP</strong></p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/mcp-replay"><img src="https://img.shields.io/npm/v/mcp-replay?label=npm" alt="npm"></a>
+</p>
+
+---
 Record and replay [MCP](https://modelcontextprotocol.io/) (Model Context Protocol) server interactions for deterministic CI testing -- the **nock/msw equivalent for MCP**.
 
 MCP is a JSON-RPC 2.0 protocol that lets AI models call tools and read resources from external servers.
