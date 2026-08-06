@@ -5,6 +5,7 @@
 <p align="center"><strong>Record and replay MCP server interactions for deterministic CI testing — nock/msw for MCP</strong></p>
 
 <p align="center">
+  <a href="https://github.com/mstuart/mcp-replay/actions/workflows/ci.yml"><img src="https://github.com/mstuart/mcp-replay/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://www.npmjs.com/package/mcp-replay"><img src="https://img.shields.io/npm/v/mcp-replay?label=npm" alt="npm"></a>
 </p>
 
