@@ -7,6 +7,8 @@
 <p align="center">
   <a href="https://github.com/mstuart/mcp-replay/actions/workflows/ci.yml"><img src="https://github.com/mstuart/mcp-replay/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://www.npmjs.com/package/mcp-replay"><img src="https://img.shields.io/npm/v/mcp-replay?label=npm" alt="npm"></a>
+  <a href="https://deepwiki.com/mstuart/mcp-replay"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
+  <a href="https://socket.dev/npm/package/mcp-replay"><img src="https://socket.dev/api/badge/npm/package/mcp-replay" alt="Socket"></a>
 </p>
 
 ---
