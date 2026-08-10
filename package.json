@@ -7,7 +7,9 @@
   "types": "dist/src/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "tsc && node --test 'dist/tests/*.test.js'"
+    "test": "tsc && node --test 'dist/tests/*.test.js'",
+    "check": "ultracite check",
+    "fix": "ultracite fix"
   },
   "keywords": [
     "mcp",
@@ -19,7 +21,9 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@biomejs/biome": "2.5.6",
     "@types/node": "^22.20.1",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "ultracite": "7.10.2"
   }
 }
