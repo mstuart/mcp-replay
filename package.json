@@ -2,15 +2,6 @@
   "name": "mcp-replay",
   "version": "0.1.0",
   "description": "Record and replay MCP server interactions for deterministic testing — nock/msw for MCP",
-  "type": "module",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
-  "scripts": {
-    "build": "tsc",
-    "test": "tsc && node --test 'dist/tests/*.test.js'",
-    "check": "ultracite check",
-    "fix": "ultracite fix"
-  },
   "keywords": [
     "mcp",
     "model-context-protocol",
@@ -20,6 +11,15 @@
     "mock"
   ],
   "license": "MIT",
+  "type": "module",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "check": "ultracite check",
+    "fix": "ultracite fix",
+    "test": "tsc && node --test 'dist/tests/*.test.js'"
+  },
   "devDependencies": {
     "@biomejs/biome": "2.5.6",
     "@types/node": "^22.20.1",
