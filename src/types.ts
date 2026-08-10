@@ -1,41 +1,53 @@
 export interface McpRequest {
-  jsonrpc: '2.0';
   id: number | string;
+  jsonrpc: "2.0";
   method: string;
   params?: Record<string, unknown>;
 }
 
 export interface McpResponse {
-  jsonrpc: '2.0';
-  id: number | string;
-  result?: unknown;
   error?: { code: number; message: string; data?: unknown };
+  id: number | string;
+  jsonrpc: "2.0";
+  result?: unknown;
 }
 
 export interface Fixture {
   method: string;
-  paramsHash: string;
   params?: Record<string, unknown>;
-  response: McpResponse;
+  paramsHash: string;
   recordedAt: string;
+  response: McpResponse;
 }
 
 export interface IFixtureStore {
-  get(method: string, params?: Record<string, unknown>): Fixture | undefined;
-  set(method: string, params: Record<string, unknown> | undefined, response: McpResponse): void;
-  save(path: string): Promise<void>;
-  load(path: string): Promise<void>;
-  clear(): void;
+  clear: () => void;
+  get: (
+    method: string,
+    params?: Record<string, unknown>
+  ) => Fixture | undefined;
+  load: (path: string) => Promise<void>;
+  save: (path: string) => Promise<void>;
+  set: (
+    method: string,
+    params: Record<string, unknown> | undefined,
+    response: McpResponse
+  ) => void;
 }
 
 export interface ReplayOptions {
+  fallback?: "fail-fast" | "pass-through";
   fixtureDir: string;
-  strategy?: 'exact' | 'match-by-hash';
-  fallback?: 'fail-fast' | 'pass-through';
   scrubFields?: string[];
+  strategy?: "exact" | "match-by-hash";
 }
 
 export interface McpReplayClient {
-  callTool(name: string, args: Record<string, unknown>): Promise<{ content: Array<{ type: string; text?: string }> }>;
-  listTools(): Promise<{ tools: Array<{ name: string; description: string; inputSchema: object }> }>;
+  callTool: (
+    name: string,
+    args: Record<string, unknown>
+  ) => Promise<{ content: Array<{ type: string; text?: string }> }>;
+  listTools: () => Promise<{
+    tools: Array<{ name: string; description: string; inputSchema: object }>;
+  }>;
 }
