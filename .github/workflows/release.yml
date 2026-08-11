@@ -1,7 +1,7 @@
 name: Release
 
 # Manual release: run from the Actions tab (or `gh workflow run release.yml -f bump=patch`).
-# Publishes to npm with provenance via OIDC trusted publishing — no NPM_TOKEN secret.
+# Publishes to npm with provenance via OIDC trusted publishing, no NPM_TOKEN secret.
 # One-time per package: npmjs.com -> package -> Settings -> Trusted Publisher -> GitHub Actions.
 
 on:
@@ -21,36 +21,57 @@ permissions:
   contents: write
   id-token: write
 
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Verify release branch
+        run: |
+          if [ "${GITHUB_REF_NAME}" != "master" ]; then
+            echo "Releases must be run from master. Current ref: ${GITHUB_REF_NAME}"
+            exit 1
+          fi
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           registry-url: "https://registry.npmjs.org"
-      - name: Upgrade npm (OIDC trusted publishing needs npm >= 11.5; pin 11)
+          cache: npm
+      - name: Upgrade npm for trusted publishing
         run: npm install -g npm@11
       - name: Install
-        run: npm ci || npm install
-      - run: npm run build --if-present
-      - run: npm test
+        run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Build
+        run: npm run build
+      - name: Test
+        run: npm test
       - name: Configure git identity
         run: |
-          git config user.name "Mark Stuart"
-          git config user.email "742884+mstuart@users.noreply.github.com"
-      - name: Bump version and tag
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Bump version and create local tag
         id: bump
         run: |
           tag=$(npm version ${{ inputs.bump }} -m 'chore(release): %s')
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
-      - name: Push commit and tag
+      - name: Verify package contents
+        run: npm pack --dry-run
+      - name: Smoke test packed package
+        run: npm run smoke:package
+      - name: Publish to npm with provenance
+        run: npm publish --provenance --access public
+      - name: Push release commit and tag
         run: |
           git push origin "HEAD:${{ github.ref_name }}"
           git push origin "${{ steps.bump.outputs.tag }}"
-      - name: Publish to npm (provenance, OIDC — no token)
-        run: npm publish --provenance --access public
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
