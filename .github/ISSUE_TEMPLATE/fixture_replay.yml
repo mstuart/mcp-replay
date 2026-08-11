@@ -1,0 +1,39 @@
+name: Fixture replay issue
+description: Report fixture matching, hashing, loading, saving, or scrubbing problems
+title: "fixture: "
+labels: [fixtures]
+body:
+  - type: textarea
+    id: request
+    attributes:
+      label: Request being replayed
+      description: Include method and params. Redact secrets.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: fixture
+    attributes:
+      label: Fixture file
+      description: Include the fixture JSON if possible. Redact secrets.
+      render: json
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Hash mismatch
+        - Fixture load/save
+        - scrubFields
+        - Client helper
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+    validations:
+      required: true
