@@ -188,6 +188,13 @@ Compute the SHA-256 hash used for fixture matching.
 
 Recursively remove fields from an object.
 
+## Project docs
+
+- [Changelog](CHANGELOG.md)
+- [Contributing](CONTRIBUTING.md)
+- [Security policy](SECURITY.md)
+- [Release process](docs/RELEASE.md)
+
 ## License
 
-MIT
+MIT. See [LICENSE](LICENSE).
