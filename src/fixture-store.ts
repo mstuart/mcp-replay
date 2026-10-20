@@ -16,7 +16,8 @@ export class FixtureStore implements IFixtureStore {
   }
 
   get(method: string, params?: Record<string, unknown>): Fixture | undefined {
-    return this.fixtures.get(this.key(method, params));
+    const fixture = this.fixtures.get(this.key(method, params));
+    return fixture ? structuredClone(fixture) : undefined;
   }
 
   set(
@@ -39,7 +40,7 @@ export class FixtureStore implements IFixtureStore {
       recordedAt: new Date().toISOString(),
       response,
     };
-    this.fixtures.set(paramsHash, fixture);
+    this.fixtures.set(paramsHash, structuredClone(fixture));
   }
 
   async save(dirPath: string): Promise<void> {
@@ -57,8 +58,15 @@ export class FixtureStore implements IFixtureStore {
     let methodDirs: string[];
     try {
       methodDirs = await readdir(dirPath);
-    } catch {
-      return; // directory doesn't exist yet, nothing to load
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        "code" in error &&
+        error.code === "ENOENT"
+      ) {
+        return; // directory doesn't exist yet, nothing to load
+      }
+      throw error;
     }
 
     const fixtureGroups = await Promise.all(
@@ -67,8 +75,15 @@ export class FixtureStore implements IFixtureStore {
         let files: string[];
         try {
           files = await readdir(fullMethodDir);
-        } catch {
-          return [];
+        } catch (error) {
+          if (
+            error instanceof Error &&
+            "code" in error &&
+            error.code === "ENOTDIR"
+          ) {
+            return []; // Ignore ordinary files in the fixture root.
+          }
+          throw error;
         }
         return Promise.all(
           files

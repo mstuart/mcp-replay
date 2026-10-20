@@ -68,6 +68,9 @@ export class McpReplay {
           params: { arguments: args, name },
         };
         const response = await this.intercept(request);
+        if (response.error) {
+          throw new Error(response.error.message, { cause: response.error });
+        }
         return response.result as {
           content: Array<{ type: string; text?: string }>;
         };
@@ -80,6 +83,9 @@ export class McpReplay {
           method: "tools/list",
         };
         const response = await this.intercept(request);
+        if (response.error) {
+          throw new Error(response.error.message, { cause: response.error });
+        }
         return response.result as {
           tools: Array<{
             name: string;

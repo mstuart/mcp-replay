@@ -12,14 +12,11 @@ export function scrub(obj: unknown, fields: string[]): unknown {
     return obj.map((item) => scrub(item, fields));
   }
 
-  const result: Record<string, unknown> = {};
-  for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
-    if (fields.includes(key)) {
-      continue;
-    }
-    result[key] = scrub(value, fields);
-  }
-  return result;
+  return Object.fromEntries(
+    Object.entries(obj)
+      .filter(([key]) => !fields.includes(key))
+      .map(([key, value]) => [key, scrub(value, fields)])
+  );
 }
 
 /**
