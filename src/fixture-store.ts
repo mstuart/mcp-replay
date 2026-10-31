@@ -8,7 +8,7 @@ export class FixtureStore implements IFixtureStore {
   private readonly scrubFields: string[];
 
   constructor(scrubFields: string[] = []) {
-    this.scrubFields = scrubFields;
+    this.scrubFields = [...scrubFields];
   }
 
   private key(method: string, params?: Record<string, unknown>): string {

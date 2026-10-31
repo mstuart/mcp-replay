@@ -83,3 +83,17 @@ it("scrubbing preserves own __proto__ fields without changing prototypes", () =>
     Object.prototype
   );
 });
+
+it("keeps scrub configuration stable after caller array mutation", () => {
+  const scrubFields = ["token"];
+  const store = new FixtureStore(scrubFields);
+  store.set(
+    "tools/call",
+    { nonce: 1, token: "first" },
+    { id: 1, jsonrpc: "2.0", result: "recorded" }
+  );
+  scrubFields.push("nonce");
+  const fixture = store.get("tools/call", { nonce: 1, token: "second" });
+  assert.ok(fixture);
+  assert.equal(fixture.response.result, "recorded");
+});
